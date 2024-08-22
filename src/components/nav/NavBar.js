@@ -6,6 +6,7 @@ import Navbar from "react-bootstrap/Navbar";
 import Home from "../body/Body";
 import ItemBody from "../item/ItemBody";
 import InvoiceBody from "../invoice/InvoiceBody";
+import NotFound from "../NotFound/NotFound";
 
 function NavBar() {
   const [expanded, setExpanded] = useState(false);
@@ -42,6 +43,7 @@ function NavBar() {
         <Route path="/" element={<Home />} />
         <Route path="/items" element={<ItemBody />} />
         <Route path="/invoices" element={<InvoiceBody />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );
