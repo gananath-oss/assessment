@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start:server": "cd Backend && nodemon index.js",
+    "start:client": "cd Client && npm start",
+    "start": "concurrently \"npm run start:server\" \"npm run start:client\"",
+    "build": "cd Client && npm run build"
   },
   "repository": {
     "type": "git",
@@ -17,11 +20,13 @@
   },
   "homepage": "https://github.com/gananath-oss/assessment#readme",
   "dependencies": {
+    "axios": "^1.7.4",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "mongoose": "^8.5.3"
   },
   "devDependencies": {
+    "concurrently": "^8.2.2",
     "nodemon": "^3.1.4"
   }
 }

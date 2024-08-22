@@ -26,7 +26,7 @@ function Body() {
         <Col xs={7}>
           <img
             src={StudentBg}
-            alt="Main Image"
+            alt="Student Background"
             style={{
               width: "100%",
               height: "100%",
