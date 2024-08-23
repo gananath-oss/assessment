@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import Delete from "../../img/delete.svg";
 import Edit from "../../img/edit.svg";
 import Search from "../../img/search.webp";
+import Dropdown from "../../img/dropdown.png";
 import CreateModel from "./CreateModel";
 import DeleteModal from "../models/DeleteModels";
 import EditModels from "./EditModels";
@@ -15,6 +16,7 @@ const StudentsTable = () => {
   const [fullStudents, setFullStudents] = useState([]);
   const [student, setStudent] = useState({});
   const [searchQuery, setSearchQuery] = useState("");
+  const [remarksFilter, setRemarksFilter] = useState("");
 
   const handleCreateClick = () => {
     setCreateModalOpen(true);
@@ -30,13 +32,24 @@ const StudentsTable = () => {
     setStudent(student);
   };
 
-  const handleSearch = () => {
-    const filteredStudents = fullStudents.filter(
-      (student) =>
-        student.studentName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        student.subjectName.toLowerCase().includes(searchQuery.toLowerCase())
+  const handleSearch = useCallback(() => {
+    const filteredByRemarks = fullStudents.filter(
+      (student) => remarksFilter === "" || student.remarks === remarksFilter
     );
+
+    const filteredStudents = filteredByRemarks.filter((student) =>
+      student.studentName.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     setStudents(filteredStudents);
+  }, [fullStudents, searchQuery, remarksFilter]);
+
+  useEffect(() => {
+    handleSearch();
+  }, [searchQuery, remarksFilter, handleSearch]);
+
+  const handleRemarksFilterChange = (e) => {
+    setRemarksFilter(e.target.value);
   };
 
   useEffect(() => {
@@ -84,14 +97,36 @@ const StudentsTable = () => {
           <button
             className="btn btn-outline-secondary"
             type="button"
-            onClick={handleSearch}
+            // onClick={handleSearch}
           >
             <img
               src={Search}
               alt="Search"
               style={{ cursor: "pointer", width: "20px", height: "20px" }}
+              className="input-group"
             />
           </button>
+        </div>
+        <div
+          className="input-group"
+          style={{ width: "200px", marginLeft: "40px" }}
+        >
+          <select
+            className="form-control"
+            value={remarksFilter}
+            onChange={handleRemarksFilterChange}
+          >
+            <option value="">All</option>
+            <option value="PASS">PASS</option>
+            <option value="FAIL">FAIL</option>
+          </select>
+          <span className="input-group-text">
+            <img
+              src={Dropdown}
+              alt="Search"
+              style={{ cursor: "pointer", width: "20px", height: "20px" }}
+            />
+          </span>
         </div>
         <button
           type="button"
