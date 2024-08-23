@@ -1,5 +1,6 @@
 const Student = require("../models/student");
 const Subject = require("../models/subject");
+const mongoose = require("mongoose");
 
 exports.createStudent = async (req, res) => {
   try {
@@ -50,6 +51,15 @@ exports.updateStudent = async (req, res) => {
   try {
     const { id } = req.params;
     const updates = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).send({ message: "Invalid ID format" });
+    }
+
+    if (updates.grade !== undefined) {
+      updates.remarks = updates.grade >= 75 ? "PASS" : "FAIL";
+    }
+
     const student = await Student.findByIdAndUpdate(id, updates, {
       new: true,
       runValidators: true,
