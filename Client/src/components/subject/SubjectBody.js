@@ -31,7 +31,7 @@ const SubjectBody = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://student-results-backend.onrender.com/subjects`
+          `${process.env.REACT_APP_API_BASE_URL}/subjects`
         );
         setSubjects(response.data);
       } catch (error) {
