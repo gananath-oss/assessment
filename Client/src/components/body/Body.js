@@ -9,7 +9,7 @@ function Body() {
       <Row>
         <Col xs={5}>
           <h1 style={{ color: "#2596be", fontWeight: 700, marginTop: "4rem" }}>
-            XYZ Acadamy
+            XYZ Student Results
           </h1>
           <h3 style={{ color: "#4ba7a8", fontWeight: 300 }}>Landing Page</h3>
           <p style={{ fontSize: "15px" }}>

@@ -6,8 +6,8 @@ import CreateModel from "./CreateModel";
 import DeleteModal from "../models/DeleteModels";
 import EditModels from "./EditModels";
 
-const ItemTable = () => {
-  const [items, setItems] = useState([]);
+const StudentsTable = () => {
+  const [students, setStudents] = useState([]);
 
   // modals states
   const [createModalOpen, setCreateModalOpen] = useState(false);
@@ -33,8 +33,11 @@ const ItemTable = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/items");
-        setItems(response.data.data);
+        const response = await axios.get(
+          "http://localhost:5002/students/with-subjects"
+        );
+        setStudents(response.data.data);
+        // console.log(response.data.data);
       } catch (error) {
         console.log(error.message || "An error occurred");
       }
@@ -59,7 +62,7 @@ const ItemTable = () => {
             margin: "2rem",
           }}
         >
-          ITEMS
+          STUDETNS
         </h1>
         <button
           type="button"
@@ -75,27 +78,29 @@ const ItemTable = () => {
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Unit Price</th>
-            <th scope="col">Item Category</th>
+            <th scope="col">Student Name</th>
+            <th scope="col">Subject Name</th>
+            <th scope="col">Grade</th>
+            <th scope="col">Remarks</th>
             <th scope="col">Edit</th>
             <th scope="col">Delete</th>
           </tr>
         </thead>
         <tbody>
-          {Array.isArray(items) ? (
-            items.map((item, index) => (
+          {Array.isArray(students) ? (
+            students.map((student, index) => (
               <tr key={index}>
                 <th scope="row">{index + 1}</th>
-                <td>{item.name}</td>
-                <td>{item.unitPrice}</td>
-                <td>{item.itemCategory}</td>
+                <td>{student.studentName}</td>
+                <td>{student.subjectName}</td>
+                <td>{student.grade}</td>
+                <td>{student.remarks}</td>
                 <td>
                   <img
                     src={Edit}
                     alt="Edit"
                     style={{ cursor: "pointer" }}
-                    onClick={() => handleEditClick(item)}
+                    onClick={() => handleEditClick(student)}
                   />
                 </td>
                 <td>
@@ -103,7 +108,7 @@ const ItemTable = () => {
                     src={Delete}
                     alt="Delete"
                     style={{ cursor: "pointer" }}
-                    onClick={() => handleDeleteClick(item.id)}
+                    onClick={() => handleDeleteClick(student.id)}
                   />
                 </td>
               </tr>
@@ -141,4 +146,4 @@ const ItemTable = () => {
   );
 };
 
-export default ItemTable;
+export default StudentsTable;

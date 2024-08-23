@@ -4,7 +4,7 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Home from "../body/Body";
-import ItemBody from "../item/ItemBody";
+import StudentsBody from "../students/StudentsBody";
 import InvoiceBody from "../invoice/InvoiceBody";
 import NotFound from "../NotFound/NotFound";
 
@@ -23,13 +23,13 @@ function NavBar() {
       >
         <Container>
           <Navbar.Brand as={Link} to="/">
-            ABC Pharmacy
+            XYZ Acadamy
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link as={Link} to="/items" onClick={handleNavClick}>
-                Items
+              <Nav.Link as={Link} to="/students" onClick={handleNavClick}>
+                Students
               </Nav.Link>
               <Nav.Link as={Link} to="/invoices" onClick={handleNavClick}>
                 Invoice
@@ -41,7 +41,8 @@ function NavBar() {
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/items" element={<ItemBody />} />
+        {/* <Route path="/students" element={<StudentsBody />} /> */}
+        <Route path="/students" element={<StudentsBody />} />
         <Route path="/invoices" element={<InvoiceBody />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
