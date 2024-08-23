@@ -3,18 +3,11 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
 
-const DeleteModal = ({
-  isOpen,
-  onClose,
-  itemID,
-  setItemID,
-  setDeleteModalOpen,
-}) => {
+const DeleteModal = ({ isOpen, onClose, studentID }) => {
   const handleDelete = async () => {
     try {
-      await axios.delete("http://localhost:8080/api/delete_item/" + itemID);
-      setDeleteModalOpen(false);
-      setItemID();
+      await axios.delete(`http://localhost:5002/students/${studentID}`);
+      onClose(); // Close modal after successful delete
     } catch (error) {
       console.error(error.message || "An error occurred");
     }
@@ -22,14 +15,15 @@ const DeleteModal = ({
 
   return (
     <Modal show={isOpen} onHide={onClose}>
-      <Modal.Body>
-        <p>Are you sure you want to delete?</p>
-      </Modal.Body>
+      <Modal.Header>
+        <Modal.Title>Confirm Delete</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>Are you sure you want to delete this student?</Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onClose}>
-          Close
+          Cancel
         </Button>
-        <Button variant="primary" onClick={handleDelete}>
+        <Button variant="danger" onClick={handleDelete}>
           Delete
         </Button>
       </Modal.Footer>

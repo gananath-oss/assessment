@@ -7,27 +7,24 @@ import DeleteModal from "../models/DeleteModels";
 import EditModels from "./EditModels";
 
 const StudentsTable = () => {
-  const [students, setStudents] = useState([]);
-
-  // modals states
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [item, setItem] = useState({});
-  const [itemID, setItemID] = useState();
+  const [students, setStudents] = useState([]);
+  const [student, setStudent] = useState({});
 
   const handleCreateClick = () => {
     setCreateModalOpen(true);
   };
 
-  const handleEditClick = (item) => {
+  const handleEditClick = (student) => {
     setEditModalOpen(true);
-    setItem(item);
+    setStudent(student);
   };
 
-  const handleDeleteClick = (itemID) => {
+  const handleDeleteClick = (student) => {
     setDeleteModalOpen(true);
-    setItemID(itemID);
+    setStudent(student);
   };
 
   useEffect(() => {
@@ -37,7 +34,7 @@ const StudentsTable = () => {
           "http://localhost:5002/students/with-subjects"
         );
         setStudents(response.data.data);
-        // console.log(response.data.data);
+        console.log(response.data.data);
       } catch (error) {
         console.log(error.message || "An error occurred");
       }
@@ -62,7 +59,7 @@ const StudentsTable = () => {
             margin: "2rem",
           }}
         >
-          STUDETNS
+          STUDENTS
         </h1>
         <button
           type="button"
@@ -108,14 +105,14 @@ const StudentsTable = () => {
                     src={Delete}
                     alt="Delete"
                     style={{ cursor: "pointer" }}
-                    onClick={() => handleDeleteClick(student.id)}
+                    onClick={() => handleDeleteClick(student)}
                   />
                 </td>
               </tr>
             ))
           ) : (
             <tr>
-              <td colSpan="4">No items available</td>
+              <td colSpan="7">No Student Record</td>
             </tr>
           )}
         </tbody>
@@ -130,16 +127,13 @@ const StudentsTable = () => {
       <DeleteModal
         isOpen={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
-        itemID={itemID}
-        setItemID={setItemID}
-        setDeleteModalOpen={setDeleteModalOpen}
+        studentID={student._id} // Ensure this is correctly passed
       />
 
       <EditModels
         isOpen={editModalOpen}
         onClose={() => setEditModalOpen(false)}
-        item={item}
-        // setItem={setItem}
+        student={student}
         setEditModalOpen={setEditModalOpen}
       />
     </div>

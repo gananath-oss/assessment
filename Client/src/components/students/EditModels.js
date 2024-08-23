@@ -3,22 +3,39 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
 
-const EditModels = ({ isOpen, onClose, item, setEditModalOpen }) => {
+const EditModels = ({ isOpen, onClose, student, setEditModalOpen }) => {
   const [formData, setFormData] = useState({
-    name: "",
-    unitPrice: "",
-    itemCategory: "",
+    studentName: "",
+    subjectKey: "",
+    grade: "",
+    remarks: "",
   });
+  const [subjects, setSubjects] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (item) {
+    const fetchSubjects = async () => {
+      try {
+        const response = await axios.get("http://localhost:5002/subjects");
+        setSubjects(response.data || []);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching subjects:", error.message);
+        setLoading(false);
+      }
+    };
+
+    fetchSubjects();
+
+    if (student) {
       setFormData({
-        name: item.name || "",
-        unitPrice: item.unitPrice || "",
-        itemCategory: item.itemCategory || "",
+        studentName: student.studentName || "",
+        subjectKey: student.subjectKey || "",
+        grade: student.grade || "",
+        remarks: student.remarks || "",
       });
     }
-  }, [item]);
+  }, [student]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,62 +44,95 @@ const EditModels = ({ isOpen, onClose, item, setEditModalOpen }) => {
 
   const handleEdit = async () => {
     try {
-      await axios.put(
-        "http://localhost:8080/api/edit_items/" + item.id,
+      await axios.patch(
+        `http://localhost:5002/students/${student._id}`, 
         formData
       );
-      setFormData({ name: "", unitPrice: "", itemCategory: "" });
+      setFormData({
+        studentName: "",
+        subjectKey: "",
+        grade: "",
+        remarks: "",
+      });
       setEditModalOpen(false);
     } catch (error) {
-      console.error(error.message || "An error occurred");
+      console.error("Error updating student:", error.message);
     }
   };
+
+  if (loading) {
+    return <div>Loading...</div>; 
+  }
 
   return (
     <Modal show={isOpen} onHide={onClose}>
       <Modal.Header>
-        <Modal.Title>Edit Item</Modal.Title>
+        <Modal.Title>Edit Student</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <div className="mb-3">
-          <label htmlFor="name" className="form-label">
-            Name
+          <label htmlFor="studentName" className="form-label">
+            Student Name
           </label>
           <input
             type="text"
             className="form-control"
-            id="name"
-            name="name"
-            value={formData.name}
+            id="studentName"
+            name="studentName"
+            value={formData.studentName}
             onChange={handleChange}
             autoFocus
             required
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="unitPrice" className="form-label">
-            Unit Price
+          <label htmlFor="subjectKey" className="form-label">
+            Subject
+          </label>
+          <select
+            className="form-control"
+            id="subjectKey"
+            name="subjectKey"
+            value={formData.subjectKey}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Select a subject</option>
+            {subjects.length > 0 ? (
+              subjects.map((subject) => (
+                <option key={subject.subjectKey} value={subject.subjectKey}>
+                  {subject.subjectName}
+                </option>
+              ))
+            ) : (
+              <option value="">No subjects available</option>
+            )}
+          </select>
+        </div>
+        <div className="mb-3">
+          <label htmlFor="grade" className="form-label">
+            Grade
           </label>
           <input
-            type="number"
+            type="text"
             className="form-control"
-            id="unitPrice"
-            name="unitPrice"
-            value={formData.unitPrice}
+            id="grade"
+            name="grade"
+            value={formData.grade}
             onChange={handleChange}
             required
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="itemCategory" className="form-label">
-            Item Category
+          <label htmlFor="remarks" className="form-label">
+            Remarks
           </label>
           <input
             type="text"
             className="form-control"
-            id="itemCategory"
-            name="itemCategory"
-            value={formData.itemCategory}
+            id="remarks"
+            name="remarks"
+            value={formData.remarks}
             onChange={handleChange}
             required
           />
@@ -93,7 +143,7 @@ const EditModels = ({ isOpen, onClose, item, setEditModalOpen }) => {
           Close
         </Button>
         <Button variant="primary" onClick={handleEdit}>
-          Edit
+          Save Changes
         </Button>
       </Modal.Footer>
     </Modal>
