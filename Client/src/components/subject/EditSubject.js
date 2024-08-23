@@ -24,7 +24,7 @@ const EditSubject = ({ isOpen, onClose, subject, setEditModalOpen }) => {
   const handleCreate = async () => {
     try {
       await axios.patch(
-        `${process.env.REACT_APP_API_BASE_URL}/subjects/${subject._id}`,
+        `https://student-results-backend.onrender.com/subjects/${subject._id}`,
         formData
       );
       setFormData({
