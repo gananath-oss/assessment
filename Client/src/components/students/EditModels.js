@@ -8,7 +8,6 @@ const EditModels = ({ isOpen, onClose, student, setEditModalOpen }) => {
     studentName: "",
     subjectKey: "",
     grade: "",
-    remarks: "",
   });
   const [subjects, setSubjects] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -32,7 +31,6 @@ const EditModels = ({ isOpen, onClose, student, setEditModalOpen }) => {
         studentName: student.studentName || "",
         subjectKey: student.subjectKey || "",
         grade: student.grade || "",
-        remarks: student.remarks || "",
       });
     }
   }, [student]);
@@ -45,14 +43,13 @@ const EditModels = ({ isOpen, onClose, student, setEditModalOpen }) => {
   const handleEdit = async () => {
     try {
       await axios.patch(
-        `http://localhost:5002/students/${student._id}`, 
+        `http://localhost:5002/students/${student._id}`,
         formData
       );
       setFormData({
         studentName: "",
         subjectKey: "",
         grade: "",
-        remarks: "",
       });
       setEditModalOpen(false);
     } catch (error) {
@@ -61,7 +58,7 @@ const EditModels = ({ isOpen, onClose, student, setEditModalOpen }) => {
   };
 
   if (loading) {
-    return <div>Loading...</div>; 
+    return <div>Loading...</div>;
   }
 
   return (
@@ -119,20 +116,6 @@ const EditModels = ({ isOpen, onClose, student, setEditModalOpen }) => {
             id="grade"
             name="grade"
             value={formData.grade}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="remarks" className="form-label">
-            Remarks
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="remarks"
-            name="remarks"
-            value={formData.remarks}
             onChange={handleChange}
             required
           />

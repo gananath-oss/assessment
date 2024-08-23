@@ -5,7 +5,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Home from "../body/Body";
 import StudentsBody from "../students/StudentsBody";
-import InvoiceBody from "../invoice/InvoiceBody";
+import SubjectBody from "../subject/SubjectBody";
 import NotFound from "../NotFound/NotFound";
 
 function NavBar() {
@@ -31,8 +31,8 @@ function NavBar() {
               <Nav.Link as={Link} to="/students" onClick={handleNavClick}>
                 Students
               </Nav.Link>
-              <Nav.Link as={Link} to="/invoices" onClick={handleNavClick}>
-                Invoice
+              <Nav.Link as={Link} to="/subjects" onClick={handleNavClick}>
+                Subject
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>
@@ -41,9 +41,8 @@ function NavBar() {
 
       <Routes>
         <Route path="/" element={<Home />} />
-        {/* <Route path="/students" element={<StudentsBody />} /> */}
         <Route path="/students" element={<StudentsBody />} />
-        <Route path="/invoices" element={<InvoiceBody />} />
+        <Route path="/subjects" element={<SubjectBody />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>

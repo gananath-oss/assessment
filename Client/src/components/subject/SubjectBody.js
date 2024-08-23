@@ -2,39 +2,36 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Delete from "../../img/delete.svg";
 import Edit from "../../img/edit.svg";
-import CreateInvoice from "./CreateInvoice";
-import EditInvoice from "./EditInvoice";
-import DeleteInvoice from "./DeleteInvoice";
+import CreateSubject from "./CreateSubject";
+import EditSubject from "./EditSubject";
+// import DeleteSubject from "./DeleteSubject";
 
-const InvoiceBody = () => {
-  const [invoices, setInvoices] = useState([]);
-
-  // modals states
+const SubjectBody = () => {
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [invoice, setInvoice] = useState({});
-  const [invoiceID, setInvoiceID] = useState([]);
+  const [subjects, setSubjects] = useState([]);
+  const [subject, setSubject] = useState({});
 
   const handleCreateClick = () => {
     setCreateModalOpen(true);
   };
 
-  const handleEditClick = (invoice) => {
+  const handleEditClick = (subject) => {
     setEditModalOpen(true);
-    setInvoice(invoice);
+    setSubject(subject);
   };
 
-  const handleDeleteClick = (invoiceID) => {
-    setDeleteModalOpen(true);
-    setInvoiceID(invoiceID);
-  };
+  // const handleDeleteClick = (subject) => {
+  //   setDeleteModalOpen(true);
+  //   setSubject(subject);
+  // };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/invoices");
-        setInvoices(response.data.data);
+        const response = await axios.get("http://localhost:5002/subjects");
+        setSubjects(response.data);
       } catch (error) {
         console.log(error.message || "An error occurred");
       }
@@ -59,7 +56,7 @@ const InvoiceBody = () => {
             margin: "2rem",
           }}
         >
-          INVOICES
+          SUBJECTS
         </h1>
         <button
           type="button"
@@ -75,74 +72,66 @@ const InvoiceBody = () => {
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Mobile No.</th>
-            <th scope="col">Email</th>
-            <th scope="col">Address</th>
-            <th scope="col">Billing Type</th>
+            <th scope="col">Subject Key</th>
+            <th scope="col">Subject Name</th>
             <th scope="col">Edit</th>
-            <th scope="col">Delete</th>
+            {/* <th scope="col">Delete</th> */}
           </tr>
         </thead>
         <tbody>
-          {Array.isArray(invoices) ? (
-            invoices.map((invoice, index) => (
+          {Array.isArray(subjects) ? (
+            subjects.map((subject, index) => (
               <tr key={index}>
                 <th scope="row">{index + 1}</th>
-                <td>{invoice.name}</td>
-                <td>{invoice.mobileNo}</td>
-                <td>{invoice.email}</td>
-                <td>{invoice.address}</td>
-                <td>{invoice.BillingType}</td>
+                <td>{subject.subjectKey}</td>
+                <td>{subject.subjectName}</td>
                 <td>
                   <img
                     src={Edit}
                     alt="Edit"
                     style={{ cursor: "pointer" }}
-                    onClick={() => handleEditClick(invoice)}
+                    onClick={() => handleEditClick(subject)}
                   />
                 </td>
-                <td>
+                {/* <td>
                   <img
                     src={Delete}
                     alt="Delete"
                     style={{ cursor: "pointer" }}
-                    onClick={() => handleDeleteClick(invoice.id)}
+                    onClick={() => handleDeleteClick(subject)}
                   />
-                </td>
+                </td> */}
               </tr>
             ))
           ) : (
             <tr>
-              <td colSpan="4">No invoices available</td>
+              <td colSpan="4">No subjects not available</td>
             </tr>
           )}
         </tbody>
       </table>
 
-      <CreateInvoice
+      <CreateSubject
         isOpen={createModalOpen}
         onClose={() => setCreateModalOpen(false)}
         setCreateModalOpen={setCreateModalOpen}
       />
 
-      <DeleteInvoice
+      {/* <DeleteSubject
         isOpen={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
-        invoiceID={invoiceID}
-        setInvoiceID={setInvoiceID}
-        setDeleteModalOpen={setDeleteModalOpen}
-      />
+        subjectID={subject._id}
+      /> */}
 
-      <EditInvoice
+      <EditSubject
         isOpen={editModalOpen}
         onClose={() => setEditModalOpen(false)}
-        invoice={invoice}
-        setInvoice={setInvoice}
+        subject={subject}
+        setSubject={setSubject}
         setEditModalOpen={setEditModalOpen}
       />
     </div>
   );
 };
 
-export default InvoiceBody;
+export default SubjectBody;
