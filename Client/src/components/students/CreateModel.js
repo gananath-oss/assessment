@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
+// import Toast from "../toast/Toast";
 
 const CreateModel = ({ isOpen, onClose, setCreateModalOpen }) => {
   const [formData, setFormData] = useState({
@@ -12,11 +13,16 @@ const CreateModel = ({ isOpen, onClose, setCreateModalOpen }) => {
   });
 
   const [subjects, setSubjects] = useState([]);
+  // const [toastMessage, setToastMessage] = useState("");
+  // const [toastType, setToastType] = useState("");
+  // const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
     const fetchSubjects = async () => {
       try {
-        const response = await axios.get("http://localhost:5002/subjects");
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_BASE_URL}/subjects`
+        );
         setSubjects(response.data || []);
       } catch (error) {
         console.error(error.message || "An error occurred");
@@ -33,7 +39,10 @@ const CreateModel = ({ isOpen, onClose, setCreateModalOpen }) => {
 
   const handleCreate = async () => {
     try {
-      await axios.post("http://localhost:5002/students", formData);
+      await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/students`,
+        formData
+      );
       setFormData({
         studentKey: "",
         studentName: "",
@@ -41,10 +50,22 @@ const CreateModel = ({ isOpen, onClose, setCreateModalOpen }) => {
         grade: "",
       });
       setCreateModalOpen(false);
+      // setToastMessage("Student created successfully!");
+      // setToastType("success");
+      // setShowToast(true);
     } catch (error) {
       console.error(error.message || "An error occurred");
+      // setToastMessage(
+      //   "Error creating student: " + (error.message || "An error occurred")
+      // );
+      // setToastType("danger");
+      // setShowToast(true);
     }
   };
+
+  // const handleToastClose = () => {
+  //   setShowToast(false);
+  // };
 
   return (
     <Modal show={isOpen} onHide={onClose}>
@@ -115,6 +136,12 @@ const CreateModel = ({ isOpen, onClose, setCreateModalOpen }) => {
             required
           />
         </div>
+        {/* <Toast
+          message={toastMessage}
+          type={toastType}
+          showToast={showToast}
+          onClose={handleToastClose}
+        /> */}
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onClose}>

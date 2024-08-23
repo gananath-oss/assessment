@@ -4,10 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start:server": "cd Backend && nodemon index.js",
-    "start:client": "cd Client && npm start",
-    "start": "concurrently \"npm run start:server\" \"npm run start:client\"",
-    "build": "cd Client && npm run build"
+    "start": "nodemon index.js"
   },
   "repository": {
     "type": "git",
