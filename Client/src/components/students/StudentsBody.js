@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Delete from "../../img/delete.svg";
 import Edit from "../../img/edit.svg";
+import Search from "../../img/search.webp";
 import CreateModel from "./CreateModel";
 import DeleteModal from "../models/DeleteModels";
 import EditModels from "./EditModels";
@@ -11,7 +12,9 @@ const StudentsTable = () => {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [students, setStudents] = useState([]);
+  const [fullStudents, setFullStudents] = useState([]);
   const [student, setStudent] = useState({});
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleCreateClick = () => {
     setCreateModalOpen(true);
@@ -27,6 +30,15 @@ const StudentsTable = () => {
     setStudent(student);
   };
 
+  const handleSearch = () => {
+    const filteredStudents = fullStudents.filter(
+      (student) =>
+        student.studentName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        student.subjectName.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setStudents(filteredStudents);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -34,7 +46,7 @@ const StudentsTable = () => {
           "http://localhost:5002/students/with-subjects"
         );
         setStudents(response.data.data);
-        console.log(response.data.data);
+        setFullStudents(response.data.data);
       } catch (error) {
         console.log(error.message || "An error occurred");
       }
@@ -61,13 +73,33 @@ const StudentsTable = () => {
         >
           STUDENTS
         </h1>
+        <div className="input-group">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Search students..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <button
+            className="btn btn-outline-secondary"
+            type="button"
+            onClick={handleSearch}
+          >
+            <img
+              src={Search}
+              alt="Search"
+              style={{ cursor: "pointer", width: "20px", height: "20px" }}
+            />
+          </button>
+        </div>
         <button
           type="button"
           className="btn btn-success"
-          style={{ margin: "2em" }}
+          style={{ margin: "2em", width: "150px" }}
           onClick={handleCreateClick}
         >
-          + Create
+          Create +
         </button>
       </div>
 
@@ -127,7 +159,7 @@ const StudentsTable = () => {
       <DeleteModal
         isOpen={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
-        studentID={student._id} // Ensure this is correctly passed
+        studentID={student._id}
       />
 
       <EditModels
