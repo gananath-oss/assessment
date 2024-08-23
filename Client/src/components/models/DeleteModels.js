@@ -6,7 +6,9 @@ import axios from "axios";
 const DeleteModal = ({ isOpen, onClose, studentID }) => {
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:5002/students/${studentID}`);
+      await axios.delete(
+        `${process.env.REACT_APP_API_BASE_URL}/students/${studentID}`
+      );
       onClose(); // Close modal after successful delete
     } catch (error) {
       console.error(error.message || "An error occurred");

@@ -53,10 +53,11 @@ const StudentsTable = () => {
   };
 
   useEffect(() => {
+    console.log(process.env.REACT_APP_API_BASE_URL);
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5002/students/with-subjects"
+          `${process.env.REACT_APP_API_BASE_URL}/students/with-subjects`
         );
         setStudents(response.data.data);
         setFullStudents(response.data.data);

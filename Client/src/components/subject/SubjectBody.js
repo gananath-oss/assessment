@@ -30,7 +30,9 @@ const SubjectBody = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5002/subjects");
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_BASE_URL}/subjects`
+        );
         setSubjects(response.data);
       } catch (error) {
         console.log(error.message || "An error occurred");

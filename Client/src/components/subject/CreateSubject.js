@@ -16,7 +16,10 @@ const CreateModel = ({ isOpen, onClose, setCreateModalOpen }) => {
 
   const handleCreate = async () => {
     try {
-      await axios.post("http://localhost:5002/subjects", formData);
+      await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/subjects`,
+        formData
+      );
       setFormData({
         subjectKey: "",
         subjectName: "",

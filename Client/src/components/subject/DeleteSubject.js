@@ -6,7 +6,9 @@ import axios from "axios";
 const DeleteInvoice = ({ isOpen, onClose, subjectID }) => {
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:5002/subjects/${subjectID}`);
+      await axios.delete(
+        `${process.env.REACT_APP_API_BASE_URL}/subjects/${subjectID}`
+      );
     } catch (error) {
       console.error(error.message || "An error occurred");
     }

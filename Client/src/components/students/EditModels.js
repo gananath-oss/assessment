@@ -15,7 +15,9 @@ const EditModels = ({ isOpen, onClose, student, setEditModalOpen }) => {
   useEffect(() => {
     const fetchSubjects = async () => {
       try {
-        const response = await axios.get("http://localhost:5002/subjects");
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_BASE_URL}/subjects`
+        );
         setSubjects(response.data || []);
         setLoading(false);
       } catch (error) {
@@ -43,7 +45,7 @@ const EditModels = ({ isOpen, onClose, student, setEditModalOpen }) => {
   const handleEdit = async () => {
     try {
       await axios.patch(
-        `http://localhost:5002/students/${student._id}`,
+        `${process.env.REACT_APP_API_BASE_URL}/students/${student._id}`,
         formData
       );
       setFormData({
